@@ -1,0 +1,28 @@
+# Egyptian tax docker container yml file created by dr Ahmed Shoulah
+version: '3.4'
+
+services:
+  egyptiantax:
+    image: egyptiantaxauthority/integrationtoolkit.api:3.1.3
+    ports: 
+     - 8020:80
+     ##- 8030:433
+    restart: always
+    environment:
+     - DBHOST=sqlite3
+     - ASPNETCORE_URLS=http://+:80;
+     #- ASPNETCORE_URLS=http://+:80;https://+:443;
+     - ASPNETCORE_ENVIRONMENT=Development
+     - ToolkitConfig__LocalConnectionsString=Data Source=/_data/LocalReceipts.db;
+     - ToolkitConfig__EtaConfig__IdentityServiceUrl=https://id.eta.gov.eg/connect/token
+     - ToolkitConfig__EtaConfig__InvoicingServiceBaseUrl=https://api.invoicing.eta.gov.eg
+     - ToolkitConfig__EtaConfig__InvoicingServiceVersion=1
+     - ToolkitConfig__EtaConfig__PosSerial=1234567899
+     ##- ASPNETCORE_HTTPS_PORT=8030  - ASPNETCORE_Kestrel__Certificates__Default__Password=__YourCertificatePassword__  - ASPNETCORE_Kestrel__Certificates__Default__Path=__/https/YourCertificate.pfx__ volumes:
+    volumes:
+     - type: volume
+       source: user_data
+       target: /_data
+volumes:
+  user_data:
+
